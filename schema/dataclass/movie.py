@@ -8,5 +8,5 @@ class MovieBaseModel(BaseModel):
     name: str = Field(..., description="The name of the movie", max_length=30, min_length=3)
     genre: GenreEnum
     release_date: datetime.date
-    rating: float
+    rating: int = Field(..., lte=10, gte=1, description="The rating of the movie")
     language: LanguageEnum

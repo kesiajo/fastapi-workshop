@@ -41,3 +41,16 @@ async def get_movie(name: str):
 async def create_movie(movie: MovieBaseModel):
     movies_list[movie.name] = movie.dict()
     return f"Successfully added {movie.name}"
+
+
+@app.delete("/movies/{name}")
+async def delete_movie(name: str):
+    del movies_list[name]
+    return f"Successfully deleted {name}"
+
+
+@app.put("/movies/{name}")
+async def update_movie(movie: MovieBaseModel):
+    movies_list[movie.name] = movie.dict()
+    return {"message": f"Successfully updated {movie.name}"}
+

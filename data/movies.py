@@ -5,35 +5,35 @@ movies = {
         "name": "Aadujeevitham",
         "genre": "DRAMA",
         "release_date": "2024-03-28",
-        "rating": 70,
+        "rating": 7.0,
         "language": "Malayalam"
     },
     "Anweshippin Kandethum": {
         "name": "Anweshippin Kandethum",
         "genre": "ACTION",
         "release_date": "2024-02-09",
-        "rating": 68,
+        "rating": 6.8,
         "language": "Malayalam"
     },
     "Premalu": {
         "name": "Premalu",
         "genre": "DRAMA",
         "release_date": "2024-02-09",
-        "rating": 68,
+        "rating": 6.8,
         "language": "Malayalam"
     },
     "Manjummel Boys": {
         "name": "Manjummel Boys",
         "genre": "THRILLER",
         "release_date": "2024-02-22",
-        "rating": 68,
+        "rating": 6.8,
         "language": "Malayalam"
     },
     "Aavesham": {
         "name": "Aavesham",
         "genre": "HORROR",
         "release_date": "2024-04-11",
-        "rating": 68,
+        "rating": 6.8,
         "language": "Malayalam"
     },
     "Vikram": {
