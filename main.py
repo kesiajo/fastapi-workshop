@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from data.movies import movies
+from data import movies_list
 
 app = FastAPI()
 
@@ -16,8 +16,10 @@ async def say_hello(name: str):
 
 
 @app.get("/movies")
-async def get_movies():
-    return list(movies.values())
+async def get_all_movies():
+    return list(movies_list.values())
 
 
-
+@app.get("/movies/{name}")
+async def get_movie(name: str):
+    return movies_list[name]
