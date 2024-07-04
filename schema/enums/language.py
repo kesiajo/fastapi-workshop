@@ -3,7 +3,8 @@ from enum import Enum
 
 class LanguageEnum(Enum):
     """Movie language enum"""
-    ENGLISH = "English"
-    TAMIL = "Tamil"
-    TELUGU = "Telugu"
-    HINDI = "Hindi"
+    ENGLISH = "ENGLISH"
+    TAMIL = "TAMIL"
+    TELUGU = "TELUGU"
+    HINDI = "HINDI"
+    MALAYALAM = "MALAYALAM"

@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.111.0"
+python-decouple = "^3.8"
+mongoengine = "^0.28.2"
 
 
 [build-system]

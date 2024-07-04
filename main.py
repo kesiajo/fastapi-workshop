@@ -1,16 +1,19 @@
 from fastapi import FastAPI
-from data import movies_list
 from schema.dataclass import MovieBaseModel
 from schema.enums import GenreEnum
+from schema.models import MovieModel
+from settings import initialize_db
 
+
+initialize_db()
 app = FastAPI()
 
-movies_list = movies_list
+movies_list = MovieModel.objects.all()
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Movie Time"}
 
 
 @app.get("/hello/{name}")
@@ -19,38 +22,35 @@ async def say_hello(name: str):
 
 
 @app.get("/movies")
-async def get_all_movies(offset: int, limit: int = 50, genre: GenreEnum = None):
-    all_movies = list(movies_list.values())
-    if genre is not None:
-        all_movies = [movie for movie in all_movies if movie["genre"] == genre.value]
-    movies_count = len(all_movies)
-    start_index = (offset - 1) * limit
-    end_index = start_index + limit
-    if start_index >= movies_count:
-        # ERROR
-        return None
-    return all_movies[start_index:end_index]
+async def get_all_movies(offset: int = 1, limit: int = 50, genre: GenreEnum = None):
+    query_params = {}
+    if genre:
+        query_params['genre'] = genre
+    all_movies = MovieModel.objects(**query_params).skip(offset).limit(limit)
+    return [MovieBaseModel(name=movie.name, genre=movie.genre, release_date=movie.release_date, rating=movie.rating, language=movie.language) for movie in all_movies]
 
 
 @app.get("/movies/{name}")
 async def get_movie(name: str):
-    return movies_list[name]
+    movie = movies_list.get(name=name)
+    return MovieBaseModel(name=movie.name, genre=movie.genre, release_date=movie.release_date, rating=movie.rating, language=movie.language)
 
 
 @app.post("/movies")
 async def create_movie(movie: MovieBaseModel):
-    movies_list[movie.name] = movie.dict()
+    MovieModel.objects.create(**movie.dict())
     return f"Successfully added {movie.name}"
 
 
 @app.delete("/movies/{name}")
 async def delete_movie(name: str):
-    del movies_list[name]
+    MovieModel.objects.get(name=name).delete()
     return f"Successfully deleted {name}"
 
 
 @app.put("/movies/{name}")
 async def update_movie(movie: MovieBaseModel):
-    movies_list[movie.name] = movie.dict()
+    mobie = movies_list.get(name=movie.name)
+    mobie.update(**movie.dict())
     return {"message": f"Successfully updated {movie.name}"}
 
