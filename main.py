@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from data import movies_list
 from schema.dataclass import MovieBaseModel
 from schema.enums import GenreEnum
@@ -27,8 +27,7 @@ async def get_all_movies(offset: int, limit: int = 50, genre: GenreEnum = None):
     start_index = (offset - 1) * limit
     end_index = start_index + limit
     if start_index >= movies_count:
-        # ERROR
-        return None
+        raise HTTPException(status_code=status.INVALID_ARGUMENT, detail="Offset/limit is invalid")
     return all_movies[start_index:end_index]
 
 
@@ -39,12 +38,16 @@ async def get_movie(name: str):
 
 @app.post("/movies")
 async def create_movie(movie: MovieBaseModel):
+    if movie.name in movies_list:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Name {movie.name} already exists")
     movies_list[movie.name] = movie.dict()
     return f"Successfully added {movie.name}"
 
 
 @app.delete("/movies/{name}")
 async def delete_movie(name: str):
+    if name not in movies_list:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Name {name} does not exists")
     del movies_list[name]
     return f"Successfully deleted {name}"
 
