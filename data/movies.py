@@ -1,5 +1,4 @@
 # SOURCE: https://www.moviecrow.com/malayalam/Best-Movies-By-Year/2024
-from enum import Enum
 
 movies = {
     "Aadujeevitham": {

@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from data import movies_list
+from schema.dataclass import MovieBaseModel
 from schema.enums import GenreEnum
 
 app = FastAPI()
+
+movies_list = movies_list
 
 
 @app.get("/")
@@ -16,7 +19,7 @@ async def say_hello(name: str):
 
 
 @app.get("/movies")
-async def get_all_movies(offset: int, limit: int = 5, genre: GenreEnum = None):
+async def get_all_movies(offset: int, limit: int = 50, genre: GenreEnum = None):
     all_movies = list(movies_list.values())
     if genre is not None:
         all_movies = [movie for movie in all_movies if movie["genre"] == genre.value]
@@ -34,7 +37,7 @@ async def get_movie(name: str):
     return movies_list[name]
 
 
-@app.get("/movies/genre/{genre}")
-async def get_all_genre_movies(genre: GenreEnum):
-    all_movies = list(movies_list.values())
-    return [movie for movie in all_movies if movie["genre"] == genre.value]
+@app.post("/movies")
+async def create_movie(movie: MovieBaseModel):
+    movies_list[movie.name] = movie.dict()
+    return f"Successfully added {movie.name}"
